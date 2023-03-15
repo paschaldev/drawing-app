@@ -19,4 +19,5 @@ module.exports = {
       typescript: {},
     },
   },
+  plugins: ['html-webpack-plugin'],
 };
