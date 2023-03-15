@@ -25,5 +25,9 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'public'),
   },
-  plugins: [new BundleAnalyzerPlugin()],
+  plugins: [
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'disabled',
+    }),
+  ],
 };
