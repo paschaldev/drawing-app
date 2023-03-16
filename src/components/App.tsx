@@ -1,5 +1,11 @@
+import Toolbar from 'src/components/Toolbar';
+
 const App = () => {
-  return <h1>Hello Lyra</h1>;
+  return (
+    <div className="app">
+      <Toolbar />
+    </div>
+  );
 };
 
 export default App;

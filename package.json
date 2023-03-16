@@ -2,14 +2,16 @@
   "scripts": {
     "build": "webpack --mode=production",
     "dev": "webpack serve --mode=development",
-    "analyze": "webpack --profile --json > stats.json",
+    "build-stats": "webpack --profile --json > public/stats.json",
+    "analyze": "yarn build-stats && webpack-bundle-analyzer public/stats.json",
     "lint": "tsc --noEmit && eslint 'src/**/*.{ts,tsx}' --cache",
     "test": "yarn lint"
   },
   "dependencies": {
     "mobx": "^6.8.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.8.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",

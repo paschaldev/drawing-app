@@ -1,0 +1,53 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.app {
+  display: flex;
+}
+
+/* Toolbar */
+.toolbar {
+  width: 65px;
+  min-height: 100vh;
+  background-color: #d9d9d9;
+
+  &,
+  &__group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &,
+  &__button {
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.toolbar__group {
+  & + .toolbar__group {
+    margin-top: 40px;
+  }
+}
+
+.toolbar__button {
+  width: 35px;
+  height: 35px;
+  border: none;
+  background: none;
+  display: inline-flex;
+  background-color: #9e9e9e;
+
+  &:not(:last-child) {
+    margin-bottom: 15px;
+  }
+
+  &--rotate-45 {
+    & > svg {
+      transform: rotate(45deg);
+    }
+  }
+}
+
