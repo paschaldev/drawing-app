@@ -40,6 +40,10 @@ body {
   display: inline-flex;
   background-color: #9e9e9e;
 
+  &:hover {
+    cursor: pointer;
+  }
+
   &:not(:last-child) {
     margin-bottom: 15px;
   }
@@ -49,5 +53,8 @@ body {
       transform: rotate(45deg);
     }
   }
-}
 
+  &--active {
+    outline: 3px solid #50845a;
+  }
+}

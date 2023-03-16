@@ -1,3 +1,4 @@
+import { ToolButton } from 'src/types';
 import { FiMove as MoveTool } from 'react-icons/fi';
 import { IoMdResize as ClosestPointTool } from 'react-icons/io';
 import { FaMousePointer as SelectTool } from 'react-icons/fa';
@@ -13,31 +14,35 @@ const Toolbar = () => {
     <div className="toolbar">
       <div className="toolbar__group">
         <ToolbarButton
-          id="select"
           title="Select"
+          id={ToolButton.SELECT}
           icon={<SelectTool size={20} />}
         />
-        <ToolbarButton id="move" title="Move" icon={<MoveTool size={20} />} />
         <ToolbarButton
-          id="closest-point"
-          className="toolbar__button--rotate-45"
+          title="Move"
+          id={ToolButton.MOVE}
+          icon={<MoveTool size={20} />}
+        />
+        <ToolbarButton
           title="Closest Point"
+          id={ToolButton.CLOSEST_POINT}
+          className="toolbar__button--rotate-45"
           icon={<ClosestPointTool size={22} />}
         />
       </div>
       <div className="toolbar__group">
         <ToolbarButton
-          id="triangle"
+          id={ToolButton.TRIANGLE}
           title="Draw Triangle"
           icon={<TriangleTool size={25} />}
         />
         <ToolbarButton
-          id="square"
+          id={ToolButton.SQUARE}
           title="Draw Square"
           icon={<SquareTool size={25} />}
         />
         <ToolbarButton
-          id="hexagon"
+          id={ToolButton.HEXAGON}
           title="Draw Hexagon"
           icon={<HexagonTool size={30} />}
         />
