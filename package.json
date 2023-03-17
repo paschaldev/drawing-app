@@ -5,7 +5,7 @@
     "build-stats": "webpack --profile --json > public/stats.json",
     "analyze": "yarn build-stats && webpack-bundle-analyzer public/stats.json",
     "lint": "tsc --noEmit && eslint 'src/**/*.{ts,tsx}' --cache",
-    "test": "yarn lint"
+    "test": "yarn lint && jest"
   },
   "dependencies": {
     "mobx": "^6.8.0",
@@ -15,19 +15,27 @@
     "react-icons": "^4.8.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/jest": "^29.5.0",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "css-loader": "^6.7.3",
     "eslint": "^8.36.0",
     "eslint-config-airbnb-typescript-prettier": "^5.0.0",
     "eslint-import-resolver-typescript": "^3.5.3",
+    "eslint-plugin-jest": "^27.2.1",
     "html-webpack-plugin": "^5.5.0",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
     "prettier": "^2.8.4",
-    "react-testing-library": "^8.0.1",
     "sass": "^1.59.3",
     "sass-loader": "^13.2.0",
     "style-loader": "^3.3.2",
+    "ts-jest": "^29.0.5",
     "ts-loader": "^9.4.2",
+    "tsconfig-paths-jest": "^0.0.1",
     "typescript": "^4.9.5",
     "webpack": "^5.76.2",
     "webpack-bundle-analyzer": "^4.8.0",

@@ -1,3 +1,11 @@
+export type ToolbarGroup = Array<{
+  id: string,
+  data: ToolbarIconProps[],
+}>;
+
+export type ToolbarProps = {
+  tools?: ToolbarGroup,
+};
 export interface ToolbarIconProps {
   id: ToolButton;
   title: string;
