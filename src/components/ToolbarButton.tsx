@@ -7,6 +7,7 @@ const ToolbarIcon: React.FunctionComponent<ToolbarIconProps> = ({
   id,
   icon,
   title,
+  config,
   className,
 }) => {
   const { activeTool, toggleActiveTool } = useContext(AppContext);
@@ -15,12 +16,12 @@ const ToolbarIcon: React.FunctionComponent<ToolbarIconProps> = ({
   if (className) {
     resolvedClassName += ` ${className}`;
   }
-  if (activeTool === id) {
+  if (id && activeTool?.tool === id) {
     resolvedClassName += ' toolbar__button--active';
   }
 
   const handleClick = () => {
-    toggleActiveTool(id);
+    toggleActiveTool(id, config);
   };
 
   return (

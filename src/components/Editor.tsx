@@ -2,11 +2,10 @@ import AppContext from 'src/contexts';
 import { observer } from 'mobx-react-lite';
 import { Vector2d } from 'konva/lib/types';
 import { KonvaEventObject } from 'konva/lib/Node';
-import { Fragment, useRef, useContext } from 'react';
-import { DrawerAction, DrawerShape } from 'src/types';
-import { Stage, Layer, Rect, RegularPolygon } from 'react-konva';
-
-const SHAPE_COLOR = '#d9d9d9';
+import { useRef, useContext } from 'react';
+import { DrawerShape } from 'src/types';
+import { Stage, Layer } from 'react-konva';
+import Shape from 'src/components/Shape';
 
 const Editor = () => {
   const isDrawing = useRef(false);
@@ -34,13 +33,13 @@ const Editor = () => {
     const position = getPointerPosition(event);
     // Check if drawing tool is selected
     if (
-      activeTool === DrawerShape.HEXAGON ||
-      activeTool === DrawerShape.SQUARE ||
-      activeTool === DrawerShape.TRIANGLE
+      activeTool.tool === DrawerShape.HEXAGON ||
+      activeTool.tool === DrawerShape.SQUARE ||
+      activeTool.tool === DrawerShape.TRIANGLE
     ) {
       isDrawing.current = true;
       // Add a new shape object to the list of shapes on canvas
-      addShape(activeTool, {
+      addShape(activeTool.tool, {
         x: position.x,
         y: position.y,
       });
@@ -75,30 +74,17 @@ const Editor = () => {
         onMousemove={onMouseMove}
       >
         <Layer>
-          {shapes.map(({ type, id, width, height, x, y }) => (
-            <Fragment key={id}>
-              {type === DrawerShape.SQUARE && (
-                <Rect
-                  x={x}
-                  y={y}
-                  width={width}
-                  height={height}
-                  fill={SHAPE_COLOR}
-                  draggable={activeTool === DrawerAction.MOVE}
-                />
-              )}
-              {(type === DrawerShape.HEXAGON ||
-                type === DrawerShape.TRIANGLE) && (
-                <RegularPolygon
-                  x={x}
-                  y={y}
-                  fill={SHAPE_COLOR}
-                  radius={width || 0}
-                  sides={type === DrawerShape.HEXAGON ? 6 : 3}
-                  draggable={activeTool === DrawerAction.MOVE}
-                />
-              )}
-            </Fragment>
+          {shapes.map(({ type, id, width, height, x, y, sides }) => (
+            <Shape
+              x={x}
+              y={y}
+              id={id}
+              key={id}
+              type={type}
+              width={width}
+              sides={sides}
+              height={height}
+            />
           ))}
         </Layer>
       </Stage>

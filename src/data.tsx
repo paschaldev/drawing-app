@@ -37,6 +37,9 @@ const tools: ToolbarGroup = [
         title: 'Draw triangle',
         id: DrawerShape.TRIANGLE,
         icon: <TriangleTool size={25} />,
+        config: {
+          sides: 3,
+        },
       },
       {
         title: 'Draw Square',
@@ -47,6 +50,9 @@ const tools: ToolbarGroup = [
         title: 'Draw Hexagon',
         id: DrawerShape.HEXAGON,
         icon: <HexagonTool size={30} />,
+        config: {
+          sides: 6,
+        },
       },
     ],
   },

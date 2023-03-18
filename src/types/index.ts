@@ -8,10 +8,17 @@ export type ToolbarGroup = Array<{
 export type ToolbarProps = {
   tools?: ToolbarGroup,
 };
+
+export interface PolygonConfig {
+  sides?: number;
+}
+
+export type ToolButtonConfig = PolygonConfig;
 export interface ToolbarIconProps {
   id: ToolButton;
   title: string;
   className?: string;
+  config?: ToolButtonConfig;
   icon: React.ReactElement;
 }
 
@@ -29,16 +36,23 @@ export enum DrawerAction {
 
 export type ToolButton = DrawerShape | DrawerAction;
 
-export interface Point extends IRect {
+export interface Point extends IRect, PolygonConfig {
   id: string;
   type: DrawerShape;
 }
+export interface ActiveTool {
+  tool: ToolButton;
+  config?: ToolButtonConfig;
+}
 
 export interface Store {
-  activeTool: ToolButton;
   shapes: Point[];
+  activeTool: ActiveTool;
   isDrawerTool: boolean;
-  toggleActiveTool: (tool: ToolButton) => void;
   updateActiveShape: (position: Vector2d) => void;
-  addShape: (type: DrawerShape, point: Omit<IRect, 'width' | 'height'>) => void;
+  toggleActiveTool: (tool: ToolButton, config?: ToolButtonConfig) => void;
+  addShape: (
+    type: DrawerShape,
+    point: Omit<IRect, 'width' | 'height'> & PolygonConfig
+  ) => void;
 }

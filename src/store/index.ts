@@ -1,12 +1,21 @@
 import { nanoid } from 'nanoid';
 import { makeAutoObservable } from 'mobx';
-import { DrawerShape, Point, ToolButton } from 'src/types';
 import { IRect, Vector2d } from 'konva/lib/types';
+import {
+  Point,
+  ToolButton,
+  ActiveTool,
+  DrawerShape,
+  ToolButtonConfig,
+  PolygonConfig,
+} from 'src/types';
 
 class LyraStore {
   shapes: Point[] = [];
 
-  activeTool: ToolButton = null;
+  activeTool: ActiveTool = {
+    tool: null,
+  };
 
   constructor() {
     makeAutoObservable(
@@ -19,20 +28,30 @@ class LyraStore {
   }
 
   get isDrawerTool(): boolean {
-    return Object.values<string>(DrawerShape).includes(this.activeTool);
+    return Object.values<string>(DrawerShape).includes(this.activeTool.tool);
   }
 
-  toggleActiveTool(tool: ToolButton) {
+  toggleActiveTool(tool: ToolButton, config?: ToolButtonConfig) {
     // If the same active tool is selected, treat as a toggle
-    this.activeTool = tool === this.activeTool ? null : tool;
+    if (tool !== this.activeTool?.tool) {
+      this.activeTool = {
+        tool,
+        config,
+      };
+      return;
+    }
+    this.activeTool = {
+      tool: null,
+    };
   }
 
   addShape(type: DrawerShape, point: Omit<IRect, 'width' | 'height'>) {
-    const newShape = {
+    const newShape: Point & PolygonConfig = {
       type,
       width: 0,
       height: 0,
       id: nanoid(),
+      sides: this.activeTool?.config?.sides,
       ...point,
     };
     this.shapes.push(newShape);
