@@ -1,3 +1,7 @@
+:root {
+  --toolbar-width: 65px;
+}
+
 body {
   padding: 0;
   margin: 0;
@@ -5,12 +9,13 @@ body {
 
 .app {
   display: flex;
+  max-width: 100%;
 }
 
 /* Toolbar */
 .toolbar {
-  width: 65px;
   min-height: 100vh;
+  width: var(--toolbar-width);
   background-color: #d9d9d9;
 
   &,
@@ -57,4 +62,12 @@ body {
   &--active {
     outline: 3px solid #50845a;
   }
+}
+
+/* Editor */
+.editor {
+  flex: 1;
+  overflow: scroll;
+  background-color: #fffff2;
+  width: calc(100% - var(--toolbar-width));
 }

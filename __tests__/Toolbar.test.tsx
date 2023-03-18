@@ -2,7 +2,7 @@ import tools from 'src/data';
 import LyraStore from 'src/store';
 import '@testing-library/jest-dom';
 import AppContext from 'src/contexts';
-import { ToolButton } from 'src/types';
+import { DrawerAction } from 'src/types';
 import Toolbar from 'src/components/Toolbar';
 import ToolbarButton from 'src/components/ToolbarButton';
 import { fireEvent, render, screen } from '@testing-library/react';
@@ -20,7 +20,7 @@ test('Render single toolbar button', async () => {
       title={title}
       icon={<span />}
       className={customClass}
-      id={ToolButton.SELECT}
+      id={DrawerAction.SELECT}
     />
   );
 
@@ -36,7 +36,7 @@ test('Active toolbar button state', async () => {
 
   render(
     <AppContext.Provider value={store}>
-      <ToolbarButton title={title} icon={<span />} id={ToolButton.SELECT} />
+      <ToolbarButton title={title} icon={<span />} id={DrawerAction.SELECT} />
     </AppContext.Provider>
   );
 

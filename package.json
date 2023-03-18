@@ -8,11 +8,14 @@
     "test": "yarn lint && jest"
   },
   "dependencies": {
+    "konva": "^8.4.2",
     "mobx": "^6.8.0",
     "mobx-react-lite": "^3.4.3",
+    "nanoid": "^4.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.8.0"
+    "react-icons": "^4.8.0",
+    "react-konva": "^18.2.5"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",

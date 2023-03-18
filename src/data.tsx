@@ -1,4 +1,4 @@
-import { ToolbarGroup, ToolButton } from 'src/types';
+import { DrawerAction, DrawerShape, ToolbarGroup } from 'src/types';
 import { FiMove as MoveTool } from 'react-icons/fi';
 import { IoMdResize as ClosestPointTool } from 'react-icons/io';
 import { FaMousePointer as SelectTool } from 'react-icons/fa';
@@ -14,17 +14,17 @@ const tools: ToolbarGroup = [
     data: [
       {
         title: 'Select',
-        id: ToolButton.SELECT,
+        id: DrawerAction.SELECT,
         icon: <SelectTool size={20} />,
       },
       {
         title: 'Move',
-        id: ToolButton.MOVE,
+        id: DrawerAction.MOVE,
         icon: <MoveTool size={20} />,
       },
       {
         title: 'Closest Point',
-        id: ToolButton.CLOSEST_POINT,
+        id: DrawerAction.CLOSEST_POINT,
         icon: <ClosestPointTool size={22} />,
         className: 'toolbar__button--rotate-45',
       },
@@ -35,17 +35,17 @@ const tools: ToolbarGroup = [
     data: [
       {
         title: 'Draw triangle',
-        id: ToolButton.TRIANGLE,
+        id: DrawerShape.TRIANGLE,
         icon: <TriangleTool size={25} />,
       },
       {
         title: 'Draw Square',
-        id: ToolButton.SQUARE,
+        id: DrawerShape.SQUARE,
         icon: <SquareTool size={20} />,
       },
       {
         title: 'Draw Hexagon',
-        id: ToolButton.CLOSEST_POINT,
+        id: DrawerShape.HEXAGON,
         icon: <HexagonTool size={30} />,
       },
     ],
