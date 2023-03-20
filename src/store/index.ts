@@ -66,11 +66,9 @@ class LyraStore {
     };
   }
 
-  addShape(type: DrawerShape, point: Omit<IRect, 'width' | 'height'>) {
-    const newShape: Point & PolygonConfig = {
+  addShape(type: DrawerShape, point: Vector2d & PolygonConfig) {
+    const newShape = {
       type,
-      width: 0,
-      height: 0,
       id: nanoid(),
       sides: this.activeTool?.config?.sides,
       ...point,
@@ -84,11 +82,35 @@ class LyraStore {
     // This action should be triggered during mouse move event.
     const activeShape = this.shapes[this.shapes.length - 1];
     if (activeShape) {
-      // Update width and height relative to the new pointer position.
-      activeShape.width = newPosition.x - activeShape.x;
-      activeShape.height = newPosition.y - activeShape.y;
+      // Difference between the new mouse position when drawing
+      // and the last saved position of the active item
+      const posXDifference = newPosition.x - activeShape.x;
+      const posYDifference = newPosition.y - activeShape.y;
+      // For regular shapes, update width and height
+      if (activeShape.type === RegularShape.SQUARE) {
+        // Update width and height relative to the new pointer position.
+        activeShape.width = posXDifference;
+        activeShape.height = posYDifference;
+      }
+      // For complex shapes / polygons, update the scale value
+      else {
+        activeShape.scaleX = posXDifference;
+        activeShape.scaleY = posYDifference;
+      }
       // Update the shapes in the store
       this.shapes.splice(this.shapes.length - 1, 1, activeShape);
+      this.shapes = this.shapes.concat();
+    }
+  }
+
+  updateShapeByID(id: string, point: IRect | Vector2d | PolygonConfig) {
+    const shapeIndex = this.shapes.findIndex((item) => item.id === id);
+    let shape = this.shapes[shapeIndex];
+    // The active shape is the last item in the store.
+    // This action should be triggered during mouse move event.
+    if (shape) {
+      shape = Object.assign(shape, point);
+      this.shapes.splice(shapeIndex, 1, shape);
       this.shapes = this.shapes.concat();
     }
   }

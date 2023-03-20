@@ -31,6 +31,7 @@ const ShapeTransformer: React.FunctionComponent<PropsWithChildren<Props>> = ({
       {isSelected && (
         <Transformer
           ref={transformerRef}
+          ignoreStroke
           boundBoxFunc={(oldBox, newBox) => {
             // limit resize
             if (newBox.width < 5 || newBox.height < 5) {

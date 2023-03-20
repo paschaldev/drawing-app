@@ -90,18 +90,22 @@ const Editor = () => {
         onTouchStart={onTouchStart}
       >
         <Layer>
-          {shapes.map(({ type, id, width, height, x, y, sides }) => (
-            <Shape
-              x={x}
-              y={y}
-              id={id}
-              key={id}
-              type={type}
-              width={width}
-              sides={sides}
-              height={height}
-            />
-          ))}
+          {shapes.map(
+            ({ type, id, width, height, x, y, sides, scaleX, scaleY }) => (
+              <Shape
+                x={x}
+                y={y}
+                id={id}
+                key={id}
+                type={type}
+                width={width}
+                sides={sides}
+                height={height}
+                scaleX={scaleX}
+                scaleY={scaleY}
+              />
+            )
+          )}
         </Layer>
       </Stage>
     </div>

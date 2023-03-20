@@ -14,6 +14,14 @@ export type ToolbarProps = {
 
 export interface PolygonConfig {
   sides?: number;
+  radius?: number;
+  scaleX?: number;
+  scaleY?: number;
+}
+
+export interface RectConfig extends Vector2d {
+  width?: number;
+  height?: number;
 }
 
 export type ToolButtonConfig = PolygonConfig;
@@ -44,7 +52,7 @@ export enum DrawerAction {
 
 export type ToolButton = DrawerShape | DrawerAction;
 
-export interface Point extends IRect, PolygonConfig {
+export interface Point extends RectConfig, PolygonConfig {
   id: string;
   type: DrawerShape;
 }
@@ -61,14 +69,15 @@ export interface SelectedShape {
 
 export interface Store {
   shapes: Point[];
+  isDrawerTool: boolean;
   activeTool: ActiveTool;
   selectedShape: SelectedShape;
-  isDrawerTool: boolean;
-  transformShape: (id: string, ref?: ShapeRef) => void;
   updateActiveShape: (position: Vector2d) => void;
-  toggleActiveTool: (tool: ToolButton, config?: ToolButtonConfig) => void;
-  addShape: (
-    type: DrawerShape,
-    point: Omit<IRect, 'width' | 'height'> & PolygonConfig
+  transformShape: (id: string, ref?: ShapeRef) => void;
+  updateShapeByID: (
+    id: string,
+    point: IRect | Vector2d | PolygonConfig
   ) => void;
+  toggleActiveTool: (tool: ToolButton, config?: ToolButtonConfig) => void;
+  addShape: (type: DrawerShape, point: Vector2d & PolygonConfig) => void;
 }
