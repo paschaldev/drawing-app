@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, toJS, autorun } from 'mobx';
 import { IRect, Vector2d } from 'konva/lib/types';
 import {
   Point,
@@ -12,18 +12,31 @@ import {
   PolygonConfig,
   SelectedShape,
   ShapeRef,
+  Storage,
 } from 'src/types';
 
+const autoSave = (store: LyraStore) => {
+  let firstRun = true;
+
+  autorun(
+    () => {
+      const stateToJSON = JSON.stringify(toJS(store).shapes);
+      if (!firstRun) {
+        sessionStorage.setItem(Storage.EDITOR, stateToJSON);
+      }
+      firstRun = false;
+    },
+    {
+      delay: 500,
+    }
+  );
+};
 class LyraStore {
-  shapes: Point[] = [];
+  shapes: Point[];
 
-  activeTool: ActiveTool = {
-    tool: null,
-  };
+  activeTool: ActiveTool;
 
-  selectedShape: SelectedShape = {
-    id: null,
-  };
+  selectedShape: SelectedShape;
 
   constructor() {
     makeAutoObservable(
@@ -33,10 +46,43 @@ class LyraStore {
         autoBind: true,
       }
     );
+    this.loadState();
+    autoSave(this);
+  }
+
+  private loadState() {
+    // Get the last saved state from session storage
+    const editorState = sessionStorage.getItem(Storage.EDITOR);
+    // Parsing the JSON string from session storage might
+    try {
+      const parsedState: Point[] = JSON.parse(editorState);
+      // Update editor state
+      this.shapes = Array.isArray(parsedState) ? parsedState : [];
+      return;
+    } catch (error) {
+      // Handle error state during auto load
+      console.log('ERR', error);
+    }
+
+    this.initialize();
+  }
+
+  private initialize() {
+    this.shapes = [];
+    this.activeTool = {
+      tool: null,
+    };
+    this.selectedShape = {
+      id: null,
+    };
+  }
+
+  reset() {
+    this.initialize();
   }
 
   get isDrawerTool(): boolean {
-    const activeTool = this.activeTool.tool;
+    const activeTool = this.activeTool?.tool;
     return (
       Object.values<string>(PolygonShape).includes(activeTool) ||
       Object.values<string>(RegularShape).includes(activeTool)

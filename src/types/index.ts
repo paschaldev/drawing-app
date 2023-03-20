@@ -67,8 +67,13 @@ export interface SelectedShape {
   ref?: ShapeRef;
 }
 
+export enum Storage {
+  EDITOR = 'lyra-editor-state',
+}
+
 export interface Store {
   shapes: Point[];
+  reset: () => void;
   isDrawerTool: boolean;
   activeTool: ActiveTool;
   selectedShape: SelectedShape;

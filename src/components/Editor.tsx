@@ -10,6 +10,7 @@ import Shape from 'src/components/Shape';
 const Editor = () => {
   const isDrawing = useRef(false);
   const {
+    reset,
     shapes,
     addShape,
     activeTool,
@@ -41,7 +42,7 @@ const Editor = () => {
     if (isDrawerTool) {
       isDrawing.current = true;
       // Add a new shape object to the list of shapes on canvas
-      addShape(activeTool.tool as DrawerShape, {
+      addShape(activeTool?.tool as DrawerShape, {
         x: position.x,
         y: position.y,
       });
@@ -79,8 +80,17 @@ const Editor = () => {
     checkDeselect(event);
   };
 
+  const clearCanvas = () => {
+    reset();
+  };
+
   return (
     <div className="editor">
+      <div className="editor__actions">
+        <button onClick={clearCanvas} type="button">
+          Clear Canvas
+        </button>
+      </div>
       <Stage
         width={window.innerWidth - 65}
         height={window.innerHeight}
@@ -90,21 +100,25 @@ const Editor = () => {
         onTouchStart={onTouchStart}
       >
         <Layer>
-          {shapes.map(
-            ({ type, id, width, height, x, y, sides, scaleX, scaleY }) => (
-              <Shape
-                x={x}
-                y={y}
-                id={id}
-                key={id}
-                type={type}
-                width={width}
-                sides={sides}
-                height={height}
-                scaleX={scaleX}
-                scaleY={scaleY}
-              />
-            )
+          {Array.isArray(shapes) && shapes.length > 0 && (
+            <>
+              {shapes.map(
+                ({ type, id, width, height, x, y, sides, scaleX, scaleY }) => (
+                  <Shape
+                    x={x}
+                    y={y}
+                    id={id}
+                    key={id}
+                    type={type}
+                    width={width}
+                    sides={sides}
+                    height={height}
+                    scaleX={scaleX}
+                    scaleY={scaleY}
+                  />
+                )
+              )}
+            </>
           )}
         </Layer>
       </Stage>

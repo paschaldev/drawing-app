@@ -33,7 +33,7 @@ const Shape = ({
   const { activeTool, transformShape, updateShapeByID, selectedShape } =
     useContext(AppContext);
 
-  const isDraggable = activeTool.tool === DrawerAction.MOVE;
+  const isDraggable = activeTool?.tool === DrawerAction.MOVE;
   const isPolygon = Object.values<string>(PolygonShape).includes(type);
 
   const onClick = () => {
@@ -52,8 +52,9 @@ const Shape = ({
   };
 
   const onTransformEnd = () => {
+    const node = selectedShape?.ref?.current;
+    if (!node) return;
     // Transformer event changes the scale, but not the shape width and height
-    const node = selectedShape.ref?.current;
     const newScaleX = node.scaleX();
     const newScaleY = node.scaleY();
     // Reset the scale value

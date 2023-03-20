@@ -15,7 +15,7 @@ const ShapeTransformer: React.FunctionComponent<PropsWithChildren<Props>> = ({
   const { selectedShape } = useContext(AppContext);
   const transformerRef = useRef<TransformerType>(null);
 
-  const isSelected = selectedShape.id === id;
+  const isSelected = selectedShape?.id === id;
 
   useEffect(() => {
     if (isSelected && selectedShape?.ref?.current) {
@@ -23,7 +23,7 @@ const ShapeTransformer: React.FunctionComponent<PropsWithChildren<Props>> = ({
       transformerRef.current.nodes([selectedShape.ref.current]);
       transformerRef.current.getLayer().batchDraw();
     }
-  }, [isSelected, selectedShape.ref]);
+  }, [isSelected, selectedShape?.ref]);
 
   return (
     <>

@@ -9,6 +9,7 @@ const AppContext = createContext<Store>({
   selectedShape: {
     id: null,
   },
+  reset: () => null,
   isDrawerTool: false,
   addShape: () => null,
   updateShapeByID: () => null,

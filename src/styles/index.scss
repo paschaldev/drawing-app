@@ -1,5 +1,9 @@
 :root {
   --toolbar-width: 65px;
+  --editor-bg: #fffff2;
+  --toolbar-bg-color: #d9d9d9;
+  --toolbar-button-color: #9e9e9e;
+  --toolbar-button-active-color: #50845a;
 }
 
 body {
@@ -16,7 +20,7 @@ body {
 .toolbar {
   min-height: 100vh;
   width: var(--toolbar-width);
-  background-color: #d9d9d9;
+  background-color: var(--toolbar-bg-color);
 
   &,
   &__group {
@@ -43,7 +47,7 @@ body {
   border: none;
   background: none;
   display: inline-flex;
-  background-color: #9e9e9e;
+  background-color: var(--toolbar-button-color);
 
   &:hover {
     cursor: pointer;
@@ -60,7 +64,7 @@ body {
   }
 
   &--active {
-    outline: 3px solid #50845a;
+    outline: 3px solid var(--toolbar-button-active-color);
   }
 }
 
@@ -68,6 +72,11 @@ body {
 .editor {
   flex: 1;
   overflow: scroll;
-  background-color: #fffff2;
+  background-color: var(--editor-bg);
   width: calc(100% - var(--toolbar-width));
+}
+
+.editor__actions {
+  padding: 10px;
+  background-color: var(--toolbar-bg-color);
 }
