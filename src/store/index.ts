@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { makeAutoObservable, toJS, autorun } from 'mobx';
+import { makeAutoObservable, toJS, reaction } from 'mobx';
 import { IRect, Vector2d } from 'konva/lib/types';
 import {
   Point,
@@ -18,9 +18,10 @@ import {
 const autoSave = (store: LyraStore) => {
   let firstRun = true;
 
-  autorun(
-    () => {
-      const stateToJSON = JSON.stringify(toJS(store).shapes);
+  reaction<Point[]>(
+    () => store.shapes,
+    (shapes) => {
+      const stateToJSON = JSON.stringify(toJS(shapes));
       if (!firstRun) {
         sessionStorage.setItem(Storage.EDITOR, stateToJSON);
       }
@@ -63,7 +64,6 @@ class LyraStore {
       // Handle error state during auto load
       console.log('ERR', error);
     }
-
     this.initialize();
   }
 
