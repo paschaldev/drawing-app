@@ -1,4 +1,9 @@
-import { DrawerAction, DrawerShape, ToolbarGroup } from 'src/types';
+import {
+  DrawerAction,
+  PolygonShape,
+  RegularShape,
+  ToolbarGroup,
+} from 'src/types';
 import { FiMove as MoveTool } from 'react-icons/fi';
 import { IoMdResize as ClosestPointTool } from 'react-icons/io';
 import { FaMousePointer as SelectTool } from 'react-icons/fa';
@@ -35,7 +40,7 @@ const tools: ToolbarGroup = [
     data: [
       {
         title: 'Draw triangle',
-        id: DrawerShape.TRIANGLE,
+        id: PolygonShape.TRIANGLE,
         icon: <TriangleTool size={25} />,
         config: {
           sides: 3,
@@ -43,12 +48,12 @@ const tools: ToolbarGroup = [
       },
       {
         title: 'Draw Square',
-        id: DrawerShape.SQUARE,
+        id: RegularShape.SQUARE,
         icon: <SquareTool size={20} />,
       },
       {
         title: 'Draw Hexagon',
-        id: DrawerShape.HEXAGON,
+        id: PolygonShape.HEXAGON,
         icon: <HexagonTool size={30} />,
         config: {
           sides: 6,

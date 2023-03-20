@@ -6,8 +6,12 @@ import {
   ToolButton,
   ActiveTool,
   DrawerShape,
+  PolygonShape,
+  RegularShape,
   ToolButtonConfig,
   PolygonConfig,
+  SelectedShape,
+  ShapeRef,
 } from 'src/types';
 
 class LyraStore {
@@ -15,6 +19,10 @@ class LyraStore {
 
   activeTool: ActiveTool = {
     tool: null,
+  };
+
+  selectedShape: SelectedShape = {
+    id: null,
   };
 
   constructor() {
@@ -28,7 +36,11 @@ class LyraStore {
   }
 
   get isDrawerTool(): boolean {
-    return Object.values<string>(DrawerShape).includes(this.activeTool.tool);
+    const activeTool = this.activeTool.tool;
+    return (
+      Object.values<string>(PolygonShape).includes(activeTool) ||
+      Object.values<string>(RegularShape).includes(activeTool)
+    );
   }
 
   toggleActiveTool(tool: ToolButton, config?: ToolButtonConfig) {
@@ -42,6 +54,15 @@ class LyraStore {
     }
     this.activeTool = {
       tool: null,
+    };
+  }
+
+  transformShape(id?: string, ref?: ShapeRef) {
+    // Activate the transform tool on a shape using
+    // the shape ID on canvas as reference
+    this.selectedShape = {
+      id,
+      ref,
     };
   }
 

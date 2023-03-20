@@ -6,8 +6,12 @@ const AppContext = createContext<Store>({
   activeTool: {
     tool: null,
   },
-  addShape: () => null,
+  selectedShape: {
+    id: null,
+  },
   isDrawerTool: false,
+  addShape: () => null,
+  transformShape: () => null,
   updateActiveShape: () => null,
   toggleActiveTool: () => null,
 });

@@ -9,8 +9,14 @@ import Shape from 'src/components/Shape';
 
 const Editor = () => {
   const isDrawing = useRef(false);
-  const { shapes, addShape, activeTool, isDrawerTool, updateActiveShape } =
-    useContext(AppContext);
+  const {
+    shapes,
+    addShape,
+    activeTool,
+    isDrawerTool,
+    updateActiveShape,
+    transformShape,
+  } = useContext(AppContext);
 
   const getPointerPosition = (
     event: KonvaEventObject<MouseEvent>
@@ -32,17 +38,21 @@ const Editor = () => {
     // Get mouse position
     const position = getPointerPosition(event);
     // Check if drawing tool is selected
-    if (
-      activeTool.tool === DrawerShape.HEXAGON ||
-      activeTool.tool === DrawerShape.SQUARE ||
-      activeTool.tool === DrawerShape.TRIANGLE
-    ) {
+    if (isDrawerTool) {
       isDrawing.current = true;
       // Add a new shape object to the list of shapes on canvas
-      addShape(activeTool.tool, {
+      addShape(activeTool.tool as DrawerShape, {
         x: position.x,
         y: position.y,
       });
+    }
+  };
+
+  const checkDeselect = (event: KonvaEventObject<TouchEvent | MouseEvent>) => {
+    // Deselect when clicked on empty drawing area
+    const clickedOnEmpty = event.target === event.target.getStage();
+    if (clickedOnEmpty) {
+      transformShape(null);
     }
   };
 
@@ -50,6 +60,7 @@ const Editor = () => {
     if (isDrawerTool) {
       startDrawing(event);
     }
+    checkDeselect(event);
   };
 
   const onMouseUp = () => {
@@ -64,6 +75,10 @@ const Editor = () => {
     }
   };
 
+  const onTouchStart = (event: KonvaEventObject<TouchEvent>) => {
+    checkDeselect(event);
+  };
+
   return (
     <div className="editor">
       <Stage
@@ -72,6 +87,7 @@ const Editor = () => {
         onMouseDown={onMouseDown}
         onMouseup={onMouseUp}
         onMousemove={onMouseMove}
+        onTouchStart={onTouchStart}
       >
         <Layer>
           {shapes.map(({ type, id, width, height, x, y, sides }) => (

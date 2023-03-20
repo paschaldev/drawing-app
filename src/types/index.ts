@@ -1,12 +1,15 @@
+import { Rect } from 'konva/lib/shapes/Rect';
+import { RegularPolygon } from 'konva/lib/shapes/RegularPolygon';
 import { IRect, Vector2d } from 'konva/lib/types';
+import { MutableRefObject } from 'react';
 
 export type ToolbarGroup = Array<{
-  id: string,
-  data: ToolbarIconProps[],
+  id: string;
+  data: ToolbarIconProps[];
 }>;
 
 export type ToolbarProps = {
-  tools?: ToolbarGroup,
+  tools?: ToolbarGroup;
 };
 
 export interface PolygonConfig {
@@ -22,11 +25,16 @@ export interface ToolbarIconProps {
   icon: React.ReactElement;
 }
 
-export enum DrawerShape {
-  SQUARE = 'square',
+export enum PolygonShape {
   HEXAGON = 'hexagon',
   TRIANGLE = 'triangle',
 }
+
+export enum RegularShape {
+  SQUARE = 'square',
+}
+
+export type DrawerShape = RegularShape | PolygonShape;
 
 export enum DrawerAction {
   MOVE = 'move',
@@ -45,10 +53,18 @@ export interface ActiveTool {
   config?: ToolButtonConfig;
 }
 
+export type ShapeRef = MutableRefObject<Rect | RegularPolygon>;
+export interface SelectedShape {
+  id: string;
+  ref?: ShapeRef;
+}
+
 export interface Store {
   shapes: Point[];
   activeTool: ActiveTool;
+  selectedShape: SelectedShape;
   isDrawerTool: boolean;
+  transformShape: (id: string, ref?: ShapeRef) => void;
   updateActiveShape: (position: Vector2d) => void;
   toggleActiveTool: (tool: ToolButton, config?: ToolButtonConfig) => void;
   addShape: (

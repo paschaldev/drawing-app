@@ -13,7 +13,7 @@ module.exports = {
       'error',
       {
         singleQuote: true,
-        parser: 'flow',
+        parser: 'typescript',
       },
     ],
   },
