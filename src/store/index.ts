@@ -79,6 +79,7 @@ class LyraStore {
 
   reset() {
     this.initialize();
+    sessionStorage.removeItem(Storage.EDITOR);
   }
 
   get isDrawerTool(): boolean {
