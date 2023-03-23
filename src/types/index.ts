@@ -25,6 +25,11 @@ export interface ShapePath {
   boundary: Vector2d;
 }
 
+export interface ShapePathUpdate {
+  boundary?: Vector2d;
+  origin?: Vector2d;
+}
+
 export enum PolygonShape {
   HEXAGON = 'hexagon',
   TRIANGLE = 'triangle',
@@ -64,6 +69,6 @@ export interface Store {
   shapeFromID(id: string): ShapePath | null;
   toggleActiveTool: (tool: ToolButton) => void;
   updateActiveShape: (position: Vector2d) => void;
-  updateShapeByID: (id: string, point: ShapePath) => void;
-  addShape: (type: DrawerShape, startPoint: Vector2d) => void;
+  updateShapeByID: (id: string, data: ShapePathUpdate) => void;
+  addShape: (type: DrawerShape, startPoint: Vector2d) => string;
 }

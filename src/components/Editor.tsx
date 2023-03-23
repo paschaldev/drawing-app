@@ -8,13 +8,14 @@ import { Stage, Layer } from 'react-konva';
 import Shape from 'src/components/Shape';
 
 const Editor = () => {
-  const isDrawing = useRef(false);
+  const isDrawing = useRef<null | string>(null);
   const {
     reset,
     shapes,
     addShape,
     activeTool,
     isDrawerTool,
+    updateShapeByID,
     updateActiveShape,
   } = useContext(AppContext);
 
@@ -38,13 +39,24 @@ const Editor = () => {
     const position = getPointerPosition(event);
     // Check if drawing tool is selected
     if (isDrawerTool) {
-      isDrawing.current = true;
       // Add a new shape object to the list of shapes on canvas
-      addShape(activeTool as DrawerShape, {
+      const shapeID = addShape(activeTool as DrawerShape, {
         x: position.x,
         y: position.y,
       });
+      // Keep track of the shape ID
+      isDrawing.current = shapeID;
     }
+  };
+
+  const setInitialBoundary = (event: KonvaEventObject<MouseEvent>) => {
+    // The shape boundary is the current mouse position when
+    // mouse is released
+    const boundary = getPointerPosition(event);
+    // Update shape boundary on mouse release
+    updateShapeByID(isDrawing.current, {
+      boundary,
+    });
   };
 
   const onMouseDown = (event: KonvaEventObject<MouseEvent>) => {
@@ -53,9 +65,10 @@ const Editor = () => {
     }
   };
 
-  const onMouseUp = () => {
+  const onMouseUp = (event: KonvaEventObject<MouseEvent>) => {
     if (isDrawerTool) {
-      isDrawing.current = false;
+      setInitialBoundary(event);
+      isDrawing.current = null;
     }
   };
 

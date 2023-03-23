@@ -9,6 +9,7 @@ import {
   SelectedShape,
   Storage,
   ShapePath,
+  ShapePathUpdate,
 } from 'src/types';
 import { getShapePoints } from 'src/helpers/geometry';
 
@@ -106,15 +107,18 @@ class LyraStore {
     this.activeTool = null;
   }
 
-  addShape(type: DrawerShape, startPoint: Vector2d) {
+  addShape(type: DrawerShape, startPoint: Vector2d): string {
+    // Gnerate unique ID for the shape
+    const id = nanoid();
     const newShape: ShapePath = {
       type,
-      id: nanoid(),
+      id,
       points: [],
       origin: startPoint,
       boundary: startPoint,
     };
     this.shapes.push(newShape);
+    return id;
   }
 
   updateActiveShape(mousePosition: Vector2d) {
@@ -136,14 +140,18 @@ class LyraStore {
     }
   }
 
-  updateShapeByID(id: string, data: ShapePath) {
+  updateShapeByID(id: string, data: ShapePathUpdate) {
+    // Get shape index in array from the ID
     const shapeIndex = this.shapeIndexFromID(id);
     if (shapeIndex === -1) return;
+    // Get the shape in array from the index
     let shape = this.shapes[shapeIndex];
-    // The active shape is the last item in the store.
-    // This action should be triggered during mouse move event.
     if (shape) {
       shape = Object.assign(shape, data);
+      // Update shape points from new origin or boundary
+      const points = getShapePoints(shape.type, shape.origin, shape.boundary);
+      shape.points = points;
+      // Update shape data in the store
       this.shapes.splice(shapeIndex, 1, shape);
       this.shapes = this.shapes.concat();
     }
