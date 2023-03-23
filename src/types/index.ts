@@ -1,6 +1,5 @@
-import { Rect } from 'konva/lib/shapes/Rect';
-import { RegularPolygon } from 'konva/lib/shapes/RegularPolygon';
-import { IRect, Vector2d } from 'konva/lib/types';
+import { Path } from 'konva/lib/shapes/Path';
+import { Vector2d } from 'konva/lib/types';
 import { MutableRefObject } from 'react';
 
 export type ToolbarGroup = Array<{
@@ -11,26 +10,24 @@ export type ToolbarGroup = Array<{
 export type ToolbarProps = {
   tools?: ToolbarGroup;
 };
-
-export interface PolygonConfig {
-  sides?: number;
-  radius?: number;
-  scaleX?: number;
-  scaleY?: number;
-}
-
-export interface RectConfig extends Vector2d {
-  width?: number;
-  height?: number;
-}
-
-export type ToolButtonConfig = PolygonConfig;
 export interface ToolbarIconProps {
   id: ToolButton;
   title: string;
   className?: string;
-  config?: ToolButtonConfig;
   icon: React.ReactElement;
+}
+
+export interface ShapePath {
+  id: string;
+  origin: Vector2d;
+  type: DrawerShape;
+  points?: number[];
+  boundary: Vector2d;
+}
+
+export interface ShapePathUpdate {
+  boundary?: Vector2d;
+  origin?: Vector2d;
 }
 
 export enum PolygonShape {
@@ -52,16 +49,7 @@ export enum DrawerAction {
 
 export type ToolButton = DrawerShape | DrawerAction;
 
-export interface Point extends RectConfig, PolygonConfig {
-  id: string;
-  type: DrawerShape;
-}
-export interface ActiveTool {
-  tool: ToolButton;
-  config?: ToolButtonConfig;
-}
-
-export type ShapeRef = MutableRefObject<Rect | RegularPolygon>;
+export type ShapeRef = MutableRefObject<Path>;
 export interface SelectedShape {
   id: string;
   ref?: ShapeRef;
@@ -72,17 +60,15 @@ export enum Storage {
 }
 
 export interface Store {
-  shapes: Point[];
+  shapes: ShapePath[];
   reset: () => void;
   isDrawerTool: boolean;
-  activeTool: ActiveTool;
+  activeTool: ToolButton;
   selectedShape: SelectedShape;
+  shapeIndexFromID(id: string): number;
+  shapeFromID(id: string): ShapePath | null;
+  toggleActiveTool: (tool: ToolButton) => void;
   updateActiveShape: (position: Vector2d) => void;
-  transformShape: (id: string, ref?: ShapeRef) => void;
-  updateShapeByID: (
-    id: string,
-    point: IRect | Vector2d | PolygonConfig
-  ) => void;
-  toggleActiveTool: (tool: ToolButton, config?: ToolButtonConfig) => void;
-  addShape: (type: DrawerShape, point: Vector2d & PolygonConfig) => void;
+  updateShapeByID: (id: string, data: ShapePathUpdate) => void;
+  addShape: (type: DrawerShape, startPoint: Vector2d) => string;
 }

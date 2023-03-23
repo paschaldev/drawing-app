@@ -10,13 +10,12 @@ const Toolbar: React.FunctionComponent<ToolbarProps> = ({ tools }) => {
     <div className="toolbar">
       {tools.map((group) => (
         <div className="toolbar__group" key={group.id}>
-          {group.data.map(({ id, title, icon, className, config }) => (
+          {group.data.map(({ id, title, icon, className }) => (
             <ToolbarButton
               key={id}
               id={id}
               icon={icon}
               title={title}
-              config={config}
               className={className}
             />
           ))}
