@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "./public",
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "baseUrl": "./",
+    "paths" : {
+      "src/*": ["./src/*"]
+    },
+    "useDefineForClassFields": true
+  }
+}
