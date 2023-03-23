@@ -13,7 +13,6 @@ const AppContext = createContext<Store>({
   shapeFromID: () => null,
   shapeIndexFromID: () => -1,
   updateShapeByID: () => null,
-  transformShape: () => null,
   updateActiveShape: () => null,
   toggleActiveTool: () => null,
 });

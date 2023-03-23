@@ -64,7 +64,6 @@ export interface Store {
   shapeFromID(id: string): ShapePath | null;
   toggleActiveTool: (tool: ToolButton) => void;
   updateActiveShape: (position: Vector2d) => void;
-  transformShape: (id: string, ref?: ShapeRef) => void;
   updateShapeByID: (id: string, point: ShapePath) => void;
   addShape: (type: DrawerShape, startPoint: Vector2d) => void;
 }

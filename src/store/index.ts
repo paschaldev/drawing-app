@@ -107,15 +107,6 @@ class LyraStore {
     this.activeTool = null;
   }
 
-  transformShape(id?: string, ref?: ShapeRef) {
-    // Activate the transform tool on a shape using
-    // the shape ID on canvas as reference
-    this.selectedShape = {
-      id,
-      ref,
-    };
-  }
-
   addShape(type: DrawerShape, startPoint: Vector2d) {
     const newShape: ShapePath = {
       type,

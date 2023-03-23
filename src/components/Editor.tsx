@@ -16,7 +16,6 @@ const Editor = () => {
     activeTool,
     isDrawerTool,
     updateActiveShape,
-    transformShape,
   } = useContext(AppContext);
 
   const getPointerPosition = (
@@ -48,19 +47,10 @@ const Editor = () => {
     }
   };
 
-  const checkDeselect = (event: KonvaEventObject<TouchEvent | MouseEvent>) => {
-    // Deselect when clicked on empty drawing area
-    const clickedOnEmpty = event.target === event.target.getStage();
-    if (clickedOnEmpty) {
-      transformShape(null);
-    }
-  };
-
   const onMouseDown = (event: KonvaEventObject<MouseEvent>) => {
     if (isDrawerTool) {
       startDrawing(event);
     }
-    checkDeselect(event);
   };
 
   const onMouseUp = () => {
@@ -73,10 +63,6 @@ const Editor = () => {
     if (isDrawerTool && isDrawing.current) {
       drawWithMouse(event);
     }
-  };
-
-  const onTouchStart = (event: KonvaEventObject<TouchEvent>) => {
-    checkDeselect(event);
   };
 
   const clearCanvas = () => {
@@ -96,7 +82,6 @@ const Editor = () => {
         onMouseDown={onMouseDown}
         onMouseup={onMouseUp}
         onMousemove={onMouseMove}
-        onTouchStart={onTouchStart}
       >
         <Layer>
           {Array.isArray(shapes) && shapes.length > 0 && (
