@@ -6,6 +6,7 @@ import { Path } from 'react-konva';
 import { Path as PathType } from 'konva/lib/shapes/Path';
 import { pointsToPath } from 'src/helpers/geometry';
 import { KonvaEventObject } from 'konva/lib/Node';
+import ShapeTracker from './ShapeTracker';
 
 const SHAPE_COLOR = '#d9d9d9';
 
@@ -13,7 +14,7 @@ const Shape = ({ id, points, origin, boundary }: ShapePath) => {
   const SVGPath = pointsToPath(points);
   const shapeRef = useRef<PathType>(null);
   const { activeTool, updateShapeByID } = useContext(AppContext);
-
+  const showTracker = activeTool === DrawerAction.CLOSEST_POINT;
   const isDraggable = activeTool === DrawerAction.MOVE;
 
   const onDragEnd = (event: KonvaEventObject<DragEvent>) => {
@@ -43,13 +44,16 @@ const Shape = ({ id, points, origin, boundary }: ShapePath) => {
   };
 
   return (
-    <Path
-      data={SVGPath}
-      ref={shapeRef}
-      fill={SHAPE_COLOR}
-      onDragEnd={onDragEnd}
-      draggable={isDraggable}
-    />
+    <>
+      <Path
+        data={SVGPath}
+        ref={shapeRef}
+        fill={SHAPE_COLOR}
+        onDragEnd={onDragEnd}
+        draggable={isDraggable}
+      />
+      {showTracker && <ShapeTracker shapeRef={shapeRef} origin={origin} />}
+    </>
   );
 };
 

@@ -1,3 +1,4 @@
+import { Path } from 'konva/lib/shapes/Path';
 import { Vector2d } from 'konva/lib/types';
 import { DrawerShape, PolygonShape, RegularShape } from 'src/types';
 
@@ -145,4 +146,70 @@ export const pointsToPath = (points: number[]): string => {
     }
   }
   return path;
+};
+
+/**
+ * Get the closest point of a coordinate to SVG path
+ *
+ * @link {https://gist.github.com/mbostock/8027637 }
+ * @param {Path} pathNode - Konva Path node
+ * @param {Vector2d} point - {x,y} coordinates
+ *
+ * @returns {Vector2d}
+ */
+export const getClosestPointToSVG = (
+  pathNode: Path,
+  point: Vector2d
+): Vector2d => {
+  const pathLength = pathNode.getLength();
+  let precision = 8;
+  let best: Vector2d;
+  let bestLength: number;
+  let bestDistance = Infinity;
+
+  function distance2(p: Vector2d) {
+    const dx = p.x - point.x;
+    const dy = p.y - point.y;
+    return dx * dx + dy * dy;
+  }
+  // linear scan for coarse approximation
+  for (
+    let scan, scanLength = 0, scanDistance;
+    scanLength <= pathLength;
+    scanLength += precision
+  ) {
+    scanDistance = distance2((scan = pathNode.getPointAtLength(scanLength)));
+    if (scanDistance < bestDistance) {
+      best = scan;
+      bestLength = scanLength;
+      bestDistance = scanDistance;
+    }
+  }
+  // binary search for precise estimate
+  precision /= 2;
+  while (precision > 0.5) {
+    let before;
+    let after;
+    const beforeLength = bestLength - precision;
+    const afterLength = bestLength + precision;
+    const beforeDistance = distance2(
+      (before = pathNode.getPointAtLength(beforeLength))
+    );
+    const afterDistance = distance2(
+      (after = pathNode.getPointAtLength(afterLength))
+    );
+    if (beforeLength >= 0 && beforeDistance < bestDistance) {
+      best = before;
+      bestLength = beforeLength;
+      bestDistance = beforeDistance;
+    } else if (afterLength <= pathLength && afterDistance < bestDistance) {
+      best = after;
+      bestLength = afterLength;
+      bestDistance = afterDistance;
+    } else {
+      precision /= 2;
+    }
+  }
+  best = { x: best.x, y: best.y };
+  return best;
 };
