@@ -30,8 +30,7 @@ const Editor = () => {
   const drawWithMouse = (event: KonvaEventObject<MouseEvent>) => {
     // This method fires when the mouse is pressed down waiting to be released.
     const mousePosition = getPointerPosition(event);
-    // The active shape is the last item in the store when mouse
-    // was pressed down.
+    // The active shape is the last item in the store when mouse was pressed down.
     updateActiveShape(mousePosition);
   };
 
@@ -42,7 +41,7 @@ const Editor = () => {
     if (isDrawerTool) {
       isDrawing.current = true;
       // Add a new shape object to the list of shapes on canvas
-      addShape(activeTool?.tool as DrawerShape, {
+      addShape(activeTool as DrawerShape, {
         x: position.x,
         y: position.y,
       });
@@ -102,22 +101,16 @@ const Editor = () => {
         <Layer>
           {Array.isArray(shapes) && shapes.length > 0 && (
             <>
-              {shapes.map(
-                ({ type, id, width, height, x, y, sides, scaleX, scaleY }) => (
-                  <Shape
-                    x={x}
-                    y={y}
-                    id={id}
-                    key={id}
-                    type={type}
-                    width={width}
-                    sides={sides}
-                    height={height}
-                    scaleX={scaleX}
-                    scaleY={scaleY}
-                  />
-                )
-              )}
+              {shapes.map(({ type, id, points, origin, boundary }) => (
+                <Shape
+                  id={id}
+                  key={id}
+                  type={type}
+                  origin={origin}
+                  points={points}
+                  boundary={boundary}
+                />
+              ))}
             </>
           )}
         </Layer>
