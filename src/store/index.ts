@@ -7,7 +7,6 @@ import {
   PolygonShape,
   RegularShape,
   SelectedShape,
-  ShapeRef,
   Storage,
   ShapePath,
 } from 'src/types';
