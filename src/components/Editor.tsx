@@ -1,11 +1,11 @@
 import AppContext from 'src/contexts';
 import { observer } from 'mobx-react-lite';
-import { Vector2d } from 'konva/lib/types';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { useRef, useContext } from 'react';
 import { DrawerShape } from 'src/types';
 import { Stage, Layer } from 'react-konva';
 import Shape from 'src/components/Shape';
+import { getPointerPosition } from 'src/helpers/util';
 
 const Editor = () => {
   const isDrawing = useRef<null | string>(null);
@@ -19,24 +19,16 @@ const Editor = () => {
     updateActiveShape,
   } = useContext(AppContext);
 
-  const getPointerPosition = (
-    event: KonvaEventObject<MouseEvent>
-  ): Vector2d => {
-    // Get the current mouse position on the canvas
-    const stage = event.target.getStage();
-    return stage.getPointerPosition();
-  };
-
   const drawWithMouse = (event: KonvaEventObject<MouseEvent>) => {
     // This method fires when the mouse is pressed down waiting to be released.
-    const mousePosition = getPointerPosition(event);
+    const mousePosition = getPointerPosition(event.target);
     // The active shape is the last item in the store when mouse was pressed down.
     updateActiveShape(mousePosition);
   };
 
   const startDrawing = (event: KonvaEventObject<MouseEvent>) => {
     // Get mouse position
-    const position = getPointerPosition(event);
+    const position = getPointerPosition(event.target);
     // Check if drawing tool is selected
     if (isDrawerTool) {
       // Add a new shape object to the list of shapes on canvas
@@ -52,7 +44,7 @@ const Editor = () => {
   const setInitialBoundary = (event: KonvaEventObject<MouseEvent>) => {
     // The shape boundary is the current mouse position when
     // mouse is released
-    const boundary = getPointerPosition(event);
+    const boundary = getPointerPosition(event.target);
     // Update shape boundary on mouse release
     updateShapeByID(isDrawing.current, {
       boundary,
