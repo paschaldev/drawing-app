@@ -80,6 +80,7 @@ const Editor = () => {
         <button onClick={clearCanvas} type="button">
           Clear Canvas
         </button>
+        <a target="_blank" href="https://github.com/paschaldev/drawing-app">See the code on Github!</a>
       </div>
       <Stage
         width={window.innerWidth - 65}
